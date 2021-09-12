@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 from ses_sns.models import SNSNotification, BlacklistedEmail
 

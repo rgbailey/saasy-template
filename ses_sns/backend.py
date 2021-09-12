@@ -31,7 +31,6 @@ def filter_blacklisted_recipients(addresses):
 
 
 class FilteringEmailBackend(EmailBackend):
-
     def open(self):
         pass
 
@@ -56,13 +55,13 @@ class FilteringEmailBackend(EmailBackend):
             message = email_message.message()
 
             # Look for first 'text/plain' and 'text/html' alternative in email
-            plaintext_body = html_body = ''
+            plaintext_body = html_body = ""
             for part in message.walk():
-                if part.get_content_type() == 'text/plain':
+                if part.get_content_type() == "text/plain":
                     plaintext_body = part.get_payload()
                     if html_body:
                         break
-                if part.get_content_type() == 'text/html':
+                if part.get_content_type() == "text/html":
                     html_body = part.get_payload()
                     if plaintext_body:
                         break
@@ -71,9 +70,9 @@ class FilteringEmailBackend(EmailBackend):
             for attachment in email_message.attachments:
                 if isinstance(attachment, MIMEBase):
                     attachment_files[attachment.get_filename()] = {
-                        'file': ContentFile(attachment.get_payload()),
-                        'mimetype': attachment.get_content_type(),
-                        'headers': OrderedDict(attachment.items()),
+                        "file": ContentFile(attachment.get_payload()),
+                        "mimetype": attachment.get_content_type(),
+                        "headers": OrderedDict(attachment.items()),
                     }
                 else:
                     attachment_files[attachment[0]] = ContentFile(attachment[1])
@@ -82,19 +81,21 @@ class FilteringEmailBackend(EmailBackend):
             bcc = filter_blacklisted_recipients(email_message.bcc)
             if not len(recipients + cc + bcc):
                 continue
-            email = create(sender=from_email,
-                           recipients=recipients,
-                           cc=cc,
-                           bcc=bcc,
-                           subject=subject,
-                           message=plaintext_body,
-                           html_message=html_body,
-                           headers=headers)
+            email = create(
+                sender=from_email,
+                recipients=recipients,
+                cc=cc,
+                bcc=bcc,
+                subject=subject,
+                message=plaintext_body,
+                html_message=html_body,
+                headers=headers,
+            )
 
             if attachment_files:
                 attachments = create_attachments(attachment_files)
 
                 email.attachments.add(*attachments)
 
-            if get_default_priority() == 'now':
+            if get_default_priority() == "now":
                 email.dispatch()

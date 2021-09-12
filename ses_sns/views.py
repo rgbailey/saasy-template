@@ -14,8 +14,10 @@ class ReceiveSNSNotification(View):
     """Receives a message from SNS and stores to db"""
 
     def post(self, request: HttpRequest, *args, **kwargs):
-        http_headers = {i[0]: i[1] for i in request.META.items() if i[0].startswith('HTTP_')}
-        body_unicode = request.body.decode('utf-8')
+        http_headers = {
+            i[0]: i[1] for i in request.META.items() if i[0].startswith("HTTP_")
+        }
+        body_unicode = request.body.decode("utf-8")
         body = json.loads(body_unicode)
         try:
             SNSNotification.objects.create(data=body, headers=http_headers).process()
