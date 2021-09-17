@@ -157,8 +157,8 @@ if AWS_STORAGE_BUCKET_NAME:
     AWS_DEFAULT_ACL = None
     AWS_QUERYSTRING_AUTH = False
     AWS_S3_CUSTOM_DOMAIN = (
-            env("AWS_S3_CUSTOM_DOMAIN", default=None)
-            or f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+        env("AWS_S3_CUSTOM_DOMAIN", default=None)
+        or f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
     )
     AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=600"}
 
@@ -195,11 +195,6 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 
 CKEDITOR_CONFIGS = {
     "default": {
-        # 'skin': 'moono',
-        # 'skin': 'office2013',
-        # 'toolbar_Basic': [
-        #     ['Source', '-', 'Bold', 'Italic']
-        # ],
         "toolbar_Custom": [
             {
                 "name": "document",
